@@ -8,6 +8,9 @@ import (
 	"net/http"
 	"os"
 
+	// "todo_app/config"
+	"github.com/panyoriokome/golang-web-application/config"
+
 	"golang.org/x/sync/errgroup"
 )
 
@@ -26,7 +29,18 @@ func main() {
 	}
 }
 
-func run(ctx context.Context, l net.Listener) error {
+func run(ctx context.Context) error {
+	cfg, err := config.New()
+	if err != nil {
+		return err
+	}
+	l, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.Port))
+	if err != nil {
+		log.Fatalf("failed to listen port %d: %v", cfg.Port, err)
+	}
+	url := fmt.Sprintf("http://%s", l.Addr().String())
+	log.Printf("start with: %v", url)
+
 	// 引数で受け取ったnet.Listenerの値を利用するためAddrは指定しない
 	s := &http.Server{
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
