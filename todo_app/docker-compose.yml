@@ -1,11 +1,14 @@
 version: "3.9"
 services:
-    app:
-        image: gotodo
-        build:
-            args:
-                - target-dev
-        volumes:
-            - .:/app
-        ports:
-            - "18000:80" # 80でポートが起動するのでローカルマシンの指定したポートにバインド
+  app:
+    image: gotodo
+    build:
+      args:
+        - target-dev
+    environment:
+      TODO_ENV: dev
+      PORT: 8080
+    volumes:
+      - .:/app
+    ports:
+      - "18000:8080" # 80でポートが起動するのでローカルマシンの指定したポートにバインド

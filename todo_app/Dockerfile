@@ -14,7 +14,7 @@ RUN go build -trimpath -ldflags "-w -s" -o app
 FROM debian:bullseye-slim as deploy
 RUN apt-get update
 
-COPY --from=deploy-builder /app/app ,
+COPY --from=deploy-builder /app/app .
 
 CMD ["./app"]
 
